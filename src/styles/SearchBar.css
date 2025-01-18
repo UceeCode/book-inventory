@@ -1,0 +1,48 @@
+/* src/styles/SearchBar.css */
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 15px 25px;
+    border-radius: 50px; /* Fully rounded for a modern look */
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    width: 100%; /* Ensures the search bar takes the full width */
+    max-width: 1200px; /* Matches the width of the book list */
+    margin: 0 auto; /* Centers the search bar */
+}
+
+.search-bar:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    transform: scale(1.02); /* Slightly scales up on hover */
+}
+
+.search-bar input {
+    border: none;
+    padding: 14px 18px;
+    width: 100%;
+    border-radius: 30px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    color: #333;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-bar input:focus {
+    outline: none;
+    background-color: #ffffff;
+    box-shadow: 0 0 5px rgba(90, 110, 255, 0.6); /* Blue glow effect */
+}
+
+.search-icon {
+    font-size: 24px;
+    color: #888;
+    margin-left: 15px;
+    transition: color 0.3s ease;
+}
+
+.search-bar input:focus + .search-icon {
+    color: #5a6eff; /* Change icon color when input is focused */
+}
