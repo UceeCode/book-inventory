@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",                   // Target modern ECMAScript features
+    "module": "ESNext",                   // Use ESNext modules for compatibility with modern bundlers
+    "strict": true,                       // Enable strict type checking options
+    "esModuleInterop": true,              // Enable compatibility with ES modules
+    "skipLibCheck": true,                 // Skip type checking for library files for faster compilation
+    "moduleResolution": "Node",           // Resolve modules using Node.js module resolution
+    "baseUrl": "./",                      // Base directory for resolving paths
+    "paths": {
+      "*": ["node_modules/*"]             // Resolve all modules from node_modules
+    },
+    "jsx": "react-jsx",                   // Enable JSX syntax for React (React 17+ JSX transform)
+    "jsxImportSource": "react",           // Specify React as the JSX source for TypeScript
+    "allowSyntheticDefaultImports": true, // Allow default imports for modules without a default export
+    "forceConsistentCasingInFileNames": true, // Enforce consistent casing in import paths
+    "resolveJsonModule": true,            // Allow importing JSON files
+    "typeRoots": ["./node_modules/@types"], // Specify type definitions location
+    "noEmit": true                        // Prevent emitting compiled files
+  },
+  "include": [
+    "src/**/*.ts",    // Include all TypeScript files in src
+    "src/**/*.tsx"    // Include all TSX files in src
+  ],
+  "exclude": [
+    "node_modules",    // Exclude node_modules to prevent redundant checks
+    "dist"             // Exclude build output directory
+  ]
+}
