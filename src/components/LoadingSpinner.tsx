@@ -1,10 +1,12 @@
-// src/components/LoadingSpinner.tsx
-
 import React from 'react';
 import '../styles/LoadingSpinner.css';
 
 const LoadingSpinner: React.FC = () => {
-  return <div className="loading-spinner">Loading...</div>;
+  return (
+    <div className="loading-spinner-wrapper">
+      <div className="loading-spinner"></div>
+    </div>
+  );
 };
 
 export default LoadingSpinner;

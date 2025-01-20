@@ -1,5 +1,3 @@
-/* src/styles/BookCard.css */
-
 .book-card {
     border: 1px solid #ddd;
     padding: 20px;
@@ -8,11 +6,14 @@
     background-color: #ffffff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
     transition: transform 0.2s ease-in-out;
+    border: 1px solid green;
 }
 
 .book-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    transition: .5s;
+    border: none;
 }
 
 .book-card h3 {

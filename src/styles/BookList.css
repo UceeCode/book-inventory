@@ -1,22 +1,19 @@
-/* src/styles/BookList.css */
-
 .book-list {
-    max-width: 1200px; /* Increase max width for more space */
+    max-width: 1200px; 
     margin: 0 auto;
     padding: 20px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     border-radius: 8px;
-  
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center content horizontally */
-    justify-content: center; /* Center content vertically */
-    min-height: 100vh; /* Make sure it takes at least full viewport height */
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
 }
 
 .book-cards {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Four columns per row */
+    grid-template-columns: repeat(4, 1fr); 
     gap: 20px;
     margin-top: 20px;
     transition: opacity 0.3s ease-in-out;
@@ -24,19 +21,19 @@
 
 @media (max-width: 1200px) {
     .book-cards {
-        grid-template-columns: repeat(3, 1fr); /* 3 columns for medium screens */
+        grid-template-columns: repeat(3, 1fr); 
     }
 }
 
 @media (max-width: 900px) {
     .book-cards {
-        grid-template-columns: repeat(2, 1fr); /* 2 columns for small screens */
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 600px) {
     .book-cards {
-        grid-template-columns: 1fr; /* 1 column for very small screens */
+        grid-template-columns: 1fr; 
     }
 }
 
@@ -53,7 +50,7 @@
     margin: 30px auto;
     padding: 12px 25px;
     font-size: 16px;
-    background-color: #5a6eff;
+    background-color: green;
     color: white;
     border: none;
     border-radius: 30px;
@@ -62,7 +59,7 @@
 }
 
 .load-more-btn:hover {
-    background-color: #4a56d7;
+    background-color: green;
     transform: translateY(-3px);
 }
 

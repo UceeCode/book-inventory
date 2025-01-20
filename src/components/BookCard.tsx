@@ -1,5 +1,3 @@
-// src/components/BookCard.tsx
-
 import React from 'react';
 import '../styles/BookCard.css';
 

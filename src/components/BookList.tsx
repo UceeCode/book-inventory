@@ -14,85 +14,103 @@ interface Book {
   released: string;
 }
 
+interface Character {
+  name: string;
+  culture: string;
+}
+
 const BookList: React.FC = () => {
   const [books, setBooks] = useState<Book[]>([]);
-  const [characters, setCharacters] = useState<any[]>([]);  // Assuming character data
-  const [page, setPage] = useState<number>(1);
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [filteredBooks, setFilteredBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [hasMore, setHasMore] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [isSearching, setIsSearching] = useState<boolean>(false);
 
-  // Fetch books and characters concurrently
-  const loadBooksAndCharacters = useCallback(
-    async (reset: boolean = false) => {
-      if (loading) return;
-
-      setLoading(true);
-
-      try {
-        // Fetch books and characters concurrently
-        const [booksData, charactersData] = await Promise.all([
-          fetchBooks(page, searchTerm),
-          fetchCharacter(searchTerm)
-        ]);
-
-        setBooks((prevBooks) => (reset ? booksData : [...prevBooks, ...booksData]));
-        setCharacters(charactersData);  // Assuming you're fetching all characters
-
-        setHasMore(booksData.length > 0);
-      } catch (error) {
-        console.error('Error fetching books and characters:', error);
-      } finally {
-        setLoading(false);
-        setIsSearching(false);
+  const filterResults = useCallback(
+    (books: Book[], characters: Character[], searchTerm: string) => {
+      if (!searchTerm) {
+        setFilteredBooks(books);
+        return;
       }
+
+      const lowerSearchTerm = searchTerm.toLowerCase();
+
+      const bookMatches = books.filter(
+        (book) =>
+          book.name.toLowerCase().includes(lowerSearchTerm) ||
+          book.isbn.toLowerCase().includes(lowerSearchTerm) ||
+          book.publisher.toLowerCase().includes(lowerSearchTerm) ||
+          book.authors.some((author) => author.toLowerCase().includes(lowerSearchTerm)) ||
+          book.released.toLowerCase().includes(lowerSearchTerm)
+      );
+
+      const characterMatches = characters.filter(
+        (character) =>
+          character.name.toLowerCase().includes(lowerSearchTerm) ||
+          character.culture.toLowerCase().includes(lowerSearchTerm)
+      );
+
+      const highlightedBooks = books.filter((book) =>
+        characterMatches.some((char) => book.authors.includes(char.name))
+      );
+
+      const uniqueBooks = Array.from(new Set([...highlightedBooks, ...bookMatches]));
+      setFilteredBooks(uniqueBooks);
     },
-    [page, searchTerm, loading]
+    []
   );
 
-  // Handle pagination and initial load
+  const loadBooksAndCharacters = useCallback(async () => {
+    if (loading) return;
+  
+    setLoading(true);
+  
+    try {
+      const [booksData, charactersData] = await Promise.all([fetchBooks(), fetchCharacter()]);
+      setBooks(booksData);
+      setCharacters(charactersData);
+      filterResults(booksData, charactersData, searchTerm);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [loading, searchTerm, filterResults]);
+  
+  
+
+  const debouncedSearch = useCallback(
+    debounce((term: string) => {
+      setSearchTerm(term);
+    }, 300),
+    []
+  );
+
   useEffect(() => {
     loadBooksAndCharacters();
-  }, [page, loadBooksAndCharacters]);
+  }, [loadBooksAndCharacters]);
 
-  // Handle search term changes with debounce
-  const debouncedSearch = useCallback(
-    debounce((newSearchTerm: string) => {
-      setPage(1);
-      setBooks([]); // Clear books results for fresh search
-      setCharacters([]); // Clear characters for fresh search
-      setIsSearching(true);
-      loadBooksAndCharacters(true);
-    }, 300),
-    [loadBooksAndCharacters]
-  );
+  useEffect(() => {
+    filterResults(books, characters, searchTerm);
+  }, [books, characters, searchTerm, filterResults]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value.trim();
-    setSearchTerm(value);
-    debouncedSearch(value); // Debounced input handling
+    debouncedSearch(value);
   };
 
   return (
     <div className="book-list">
       <SearchBar onSearchChange={handleSearchChange} />
       <div className="book-cards">
-        {books.map((book, index) => (
+        {filteredBooks.map((book, index) => (
           <BookCard key={index} book={book} />
         ))}
       </div>
-      {isSearching && <p className="status-text">Searching for books...</p>}
-      {loading && !isSearching && <LoadingSpinner />}
-      {hasMore && !loading && !isSearching && (
-        <button className="load-more-btn" onClick={() => setPage((prev) => prev + 1)}>
-          Load More
-        </button>
+      {loading && <LoadingSpinner />}
+      {!loading && filteredBooks.length === 0 && (
+        <p className="status-text">No books or characters found. Try a different search term.</p>
       )}
-      {!loading && books.length === 0 && !isSearching && (
-        <p className="status-text">No books found. Try a different search term.</p>
-      )}
-
     </div>
   );
 };

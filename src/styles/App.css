@@ -1,0 +1,15 @@
+.heading {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+.heading-Text {
+    color: green;
+    text-align: center;
+    margin: 20px;
+}
+img {
+    height: 110px;
+    width: 110px;
+}
